@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Api", "FinanceSystem.Api\FinanceSystem.Api.csproj", "{53DBCD67-8A1D-4DEB-BDEE-2B5C0B2207E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Services", "FinanceSystem.Services\FinanceSystem.Services.csproj", "{D895F472-5C6B-4021-95A0-5F7235057751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Services.Tests", "FinanceSystem.Services.Tests\FinanceSystem.Services.Tests.csproj", "{D16711FC-A6E0-4B27-86AB-43B630FAB00E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{53DBCD67-8A1D-4DEB-BDEE-2B5C0B2207E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53DBCD67-8A1D-4DEB-BDEE-2B5C0B2207E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53DBCD67-8A1D-4DEB-BDEE-2B5C0B2207E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D895F472-5C6B-4021-95A0-5F7235057751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D895F472-5C6B-4021-95A0-5F7235057751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D895F472-5C6B-4021-95A0-5F7235057751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D895F472-5C6B-4021-95A0-5F7235057751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16711FC-A6E0-4B27-86AB-43B630FAB00E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16711FC-A6E0-4B27-86AB-43B630FAB00E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16711FC-A6E0-4B27-86AB-43B630FAB00E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16711FC-A6E0-4B27-86AB-43B630FAB00E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
