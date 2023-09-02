@@ -1,3 +1,6 @@
+using FinanceSystem.Data;
+using FinanceSystem.Data.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,9 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen()
+    .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
 
 var app = builder.Build();
+
+MigrationToolExtension.Execute(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
