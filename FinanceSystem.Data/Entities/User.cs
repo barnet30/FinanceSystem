@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceSystem.Abstractions.Entities;
+namespace FinanceSystem.Data.Entities;
 
 /// <summary>
 /// User
 /// </summary>
-public class UserEntity : BaseEntity
+public class User : BaseEntity
 {
     public string FirstName { get; set; }
 
@@ -27,10 +27,10 @@ public class UserEntity : BaseEntity
 
     public DateTime CreateDate { get; set; }
     
-    public List<PaymentEntity> Payments { get; set; } = new();
+    public List<Payment> Payments { get; set; } = new();
 
     /// <summary>
     /// If user transfer someone
     /// </summary>
-    public List<PaymentEntity> TransferPayment { get; set; } = new();
+    public List<Payment> TransferPayment { get; set; } = new();
 }

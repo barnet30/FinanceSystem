@@ -1,6 +1,6 @@
 ﻿using FinanceSystem.Abstractions.Interfaces;
 
-namespace FinanceSystem.Abstractions;
+namespace FinanceSystem.Data.Entities;
 
 /// <summary>
 /// Base class for entities
