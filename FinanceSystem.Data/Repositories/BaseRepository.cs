@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data.Repositories;
 
-public sealed class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
     private IDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -56,6 +56,7 @@ public sealed class BaseRepository<TEntity> : IRepository<TEntity> where TEntity
 
     public async Task<Guid> InsertAsync(TEntity entity)
     {
+        entity.Id = Guid.NewGuid();
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity.Id;

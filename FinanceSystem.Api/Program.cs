@@ -33,6 +33,9 @@ builder.Services.AddSwaggerGen()
     .AddAuthorization()
     .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
 
+builder.Services.RegisterServices();
+builder.Services.RegisterRepositories();
+
 var app = builder.Build();
 
 MigrationToolExtension.Execute(app.Services);
