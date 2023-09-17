@@ -17,6 +17,7 @@ public class FinanceSystemDbContext : DbContext, IDbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public override Task<int> SaveChangesAsync(CancellationToken token = default) => base.SaveChangesAsync(token);
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
