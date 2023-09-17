@@ -1,13 +1,13 @@
-﻿using FinanceSystem.Abstractions.Entities;
+﻿using FinanceSystem.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data;
 
 public interface IDbContext
 {
-    DbSet<LocationEntity> Locations { get; set; }
-    DbSet<BankEntity> Banks { get; set; }
-    DbSet<UserEntity> Users { get; set; }
-    DbSet<CompanyEntity> Companies { get; set; }
-    DbSet<PaymentEntity> Payments { get; set; }
+    DbSet<Location> Locations { get; set; }
+    DbSet<Bank> Banks { get; set; }
+    DbSet<User> Users { get; set; }
+    DbSet<Company> Companies { get; set; }
+    DbSet<Payment> Payments { get; set; }
 }

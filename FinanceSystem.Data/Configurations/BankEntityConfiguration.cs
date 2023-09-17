@@ -1,12 +1,12 @@
-﻿using FinanceSystem.Abstractions.Entities;
+﻿using FinanceSystem.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinanceSystem.Data.Configurations;
 
-public class BankEntityConfiguration : IEntityTypeConfiguration<BankEntity>
+public class BankEntityConfiguration : IEntityTypeConfiguration<Bank>
 {
-    public void Configure(EntityTypeBuilder<BankEntity> builder)
+    public void Configure(EntityTypeBuilder<Bank> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();

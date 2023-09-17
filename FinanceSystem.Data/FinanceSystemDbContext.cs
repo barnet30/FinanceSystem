@@ -1,5 +1,5 @@
-﻿using FinanceSystem.Abstractions.Entities;
-using FinanceSystem.Data.Configurations;
+﻿using FinanceSystem.Data.Configurations;
+using FinanceSystem.Data.Entities;
 using FinanceSystem.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,11 +12,11 @@ public class FinanceSystemDbContext : DbContext, IDbContext
         
     }
 
-    public DbSet<LocationEntity> Locations { get; set; }
-    public DbSet<BankEntity> Banks { get; set; }
-    public DbSet<UserEntity> Users { get; set; }
-    public DbSet<CompanyEntity> Companies { get; set; }
-    public DbSet<PaymentEntity> Payments { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<Bank> Banks { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
