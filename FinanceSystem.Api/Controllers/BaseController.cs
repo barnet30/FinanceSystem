@@ -10,7 +10,7 @@ namespace FinanceSystem.Controllers;
 [Route("api/[controller]")]
 public abstract class BaseController : ControllerBase
 {
-    public async Task<IActionResult> GetResult(Func<Task<Result>> action,
+    protected async Task<IActionResult> GetResult(Func<Task<Result>> action,
         HttpStatusCode successStatusCode = HttpStatusCode.OK)
     {
         var result = await action();
@@ -21,7 +21,7 @@ public abstract class BaseController : ControllerBase
         };
     }
 
-    public async Task<IActionResult> GetResult<T>(Func<Task<Result<T>>> action, HttpStatusCode successStatusCode = HttpStatusCode.OK)
+    protected static async Task<IActionResult> GetResult<T>(Func<Task<Result<T>>> action, HttpStatusCode successStatusCode = HttpStatusCode.OK)
     {
         var result = await action();
 

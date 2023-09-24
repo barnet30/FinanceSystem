@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data;
 
-public class FinanceSystemDbContext : DbContext, IDbContext
+public class FinanceSystemDbContext : DbContext, IFinanceSystemDbContext
 {
-    public FinanceSystemDbContext(DbContextOptions<FinanceSystemDbContext> options) : base(options)
+    public FinanceSystemDbContext(DbContextOptions options) : base(options)
     {
         
     }

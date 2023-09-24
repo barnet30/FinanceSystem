@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     {
         try
         {
-            var repositories = typeof(ServiceCollectionExtensions).Assembly.GetTypes().Where(x =>
+            var repositories = typeof(FinanceSystemDbContext).Assembly.GetTypes().Where(x =>
                 x.Name.EndsWith("Repository") && x is { IsAbstract: false, IsInterface: false });
 
             foreach (var repository in repositories)
@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddDataAccess(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<IDbContext, FinanceSystemDbContext>(options =>
+        services.AddDbContext<IFinanceSystemDbContext, FinanceSystemDbContext>(options =>
         {
             options.UseNpgsql(connectionString, action =>
             {

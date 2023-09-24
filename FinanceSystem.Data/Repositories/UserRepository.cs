@@ -1,12 +1,11 @@
 ﻿using FinanceSystem.Data.Entities;
-using FinanceSystem.Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using FinanceSystem.Data.Interfaces.Users;
 
 namespace FinanceSystem.Data.Repositories;
 
-public class UserRepository : BaseRepository<User>, IRepository<User>
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
-    public UserRepository(DbSet<User> dbSet, IDbContext context) : base(dbSet, context)
+    public UserRepository(IFinanceSystemDbContext context) : base(context)
     {
     }
 }

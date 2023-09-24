@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FinanceSystem.Abstractions.Models.Result;
 using FinanceSystem.Abstractions.Models.Users;
 using FinanceSystem.Data.Entities;
 using FinanceSystem.Data.Interfaces.Users;
@@ -17,10 +18,10 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<Guid> RegisterUser(UserRegisterDto userRegisterDto)
+    public async Task<Result<Guid>> RegisterUser(UserRegisterDto userRegisterDto)
     {
         var user = _mapper.Map<User>(userRegisterDto);
         var result = await _userRepository.InsertAsync(user);
-        return result;
+        return Result<Guid>.FromValue(result);
     }
 }

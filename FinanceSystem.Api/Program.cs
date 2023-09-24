@@ -1,7 +1,7 @@
 using System.Text;
 using FinanceSystem.Configuration;
-using FinanceSystem.Data;
 using FinanceSystem.Data.Extensions;
+using FinanceSystem.Services.MapperProfiles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,12 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection(nameof(AuthOptions)));
+
+builder.Services.RegisterRepositories();
+builder.Services.RegisterServices();
+
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
-        var jwtOptions = builder.Configuration.GetValue<AuthOptions>(nameof(AuthOptions));
+        var jwtOptions = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidIssuer = jwtOptions.Issuer,
@@ -30,11 +35,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen()
+    .AddAutoMapper(typeof(UserProfile).Assembly)
     .AddAuthorization()
     .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
 
-builder.Services.RegisterServices();
-builder.Services.RegisterRepositories();
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using FinanceSystem.Abstractions.Models.Users;
 using FinanceSystem.Services.Interfaces.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceSystem.Controllers;
@@ -14,5 +15,13 @@ public sealed class UserController : BaseController
         _userService = userService;
     }
 
-    //public Task<IActionResult> RegisterUser(UserRegisterDto userRegisterDto) => GetResult(()=>
+    /// <summary>
+    /// Register new user
+    /// </summary>
+    /// <param name="userRegisterDto">Registration user info</param>
+    /// <returns>Guid - new user Id</returns>
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public Task<IActionResult> RegisterUser(UserRegisterDto userRegisterDto) =>
+        GetResult(async () => await _userService.RegisterUser(userRegisterDto));
 }

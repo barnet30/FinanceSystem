@@ -9,13 +9,13 @@ namespace FinanceSystem.Data.Repositories;
 
 public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    private IDbContext _context;
+    private readonly IFinanceSystemDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
-    public BaseRepository(DbSet<TEntity> dbSet, IDbContext context)
+    public BaseRepository(IFinanceSystemDbContext context)
     {
-        _dbSet = dbSet;
         _context = context;
+        _dbSet = context.Set<TEntity>();
     }
 
     public async Task<IQueryable<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
