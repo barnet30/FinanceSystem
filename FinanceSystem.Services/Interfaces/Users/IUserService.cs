@@ -6,4 +6,5 @@ namespace FinanceSystem.Services.Interfaces.Users;
 public interface IUserService
 {
     Task<Result<Guid>> RegisterUser(UserRegisterDto userRegisterDto);
+    Task<Result<string>> AuthorizeUser(UserLoginDto userLoginDto);
 }

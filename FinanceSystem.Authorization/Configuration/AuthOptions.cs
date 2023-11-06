@@ -1,4 +1,4 @@
-﻿namespace FinanceSystem.Configuration;
+﻿namespace Authorization.Configuration;
 
 public class AuthOptions
 {

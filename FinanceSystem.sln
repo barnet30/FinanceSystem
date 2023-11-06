@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Abstractions"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Common", "FinanceSystem.Common\FinanceSystem.Common.csproj", "{1A48997C-2035-4DA8-B6C6-7FEF8070AFE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceSystem.Authorization", "FinanceSystem.Authorization\FinanceSystem.Authorization.csproj", "{65BA0A5D-AFF8-4E7D-B37E-E0409C4BFFEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{1A48997C-2035-4DA8-B6C6-7FEF8070AFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A48997C-2035-4DA8-B6C6-7FEF8070AFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A48997C-2035-4DA8-B6C6-7FEF8070AFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65BA0A5D-AFF8-4E7D-B37E-E0409C4BFFEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65BA0A5D-AFF8-4E7D-B37E-E0409C4BFFEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65BA0A5D-AFF8-4E7D-B37E-E0409C4BFFEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65BA0A5D-AFF8-4E7D-B37E-E0409C4BFFEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

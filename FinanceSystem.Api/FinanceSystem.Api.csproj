@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FinanceSystem.Authorization\FinanceSystem.Authorization.csproj" />
       <ProjectReference Include="..\FinanceSystem.Data\FinanceSystem.Data.csproj" />
       <ProjectReference Include="..\FinanceSystem.Services\FinanceSystem.Services.csproj" />
     </ItemGroup>

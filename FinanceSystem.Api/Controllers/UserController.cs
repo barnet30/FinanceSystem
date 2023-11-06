@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceSystem.Controllers;
 
 [Tags("User")]
+[Route("api/user")]
 public sealed class UserController : BaseController
 {
     private readonly IUserService _userService;
@@ -24,4 +25,9 @@ public sealed class UserController : BaseController
     [AllowAnonymous]
     public Task<IActionResult> RegisterUser(UserRegisterDto userRegisterDto) =>
         GetResult(async () => await _userService.RegisterUser(userRegisterDto));
+
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public Task<IActionResult> AuthorizeUser(UserLoginDto userLoginDto) =>
+        GetResult(async () => await _userService.AuthorizeUser(userLoginDto));
 }
