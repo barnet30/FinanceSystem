@@ -26,17 +26,23 @@ public sealed class AuthManager : IAuthManager
         {
             new(AuthorizationConstants.EmailClaimName, user.Email),
             new(AuthorizationConstants.PhoneClaimName, user.Phone),
-            new(AuthorizationConstants.UserIdClaimName, user.Phone),
+            new(AuthorizationConstants.UserIdClaimName, user.Id.ToString()),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authOptions.Key));
-        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        var tokenHandler = new JwtSecurityTokenHandler();
 
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_authOptions.Lifetime),
-            signingCredentials: cred);
-
-        return Result<string>.FromValue(new JwtSecurityTokenHandler().WriteToken(token));
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddMinutes(_authOptions.Lifetime),
+            Issuer = _authOptions.Issuer,
+            Audience = _authOptions.Audience,
+            SigningCredentials = cred
+        };
+        
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return Result<string>.FromValue(tokenHandler.WriteToken(token));
     }
 }

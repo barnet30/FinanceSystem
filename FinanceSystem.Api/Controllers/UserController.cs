@@ -26,6 +26,11 @@ public sealed class UserController : BaseController
     public Task<IActionResult> RegisterUser(UserRegisterDto userRegisterDto) =>
         GetResult(async () => await _userService.RegisterUser(userRegisterDto));
 
+    /// <summary>
+    /// Authorize user
+    /// </summary>
+    /// <param name="userLoginDto">Email and password</param>
+    /// <returns></returns>
     [HttpPost("login")]
     [AllowAnonymous]
     public Task<IActionResult> AuthorizeUser(UserLoginDto userLoginDto) =>

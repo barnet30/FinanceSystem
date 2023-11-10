@@ -20,10 +20,52 @@ builder.Services.RegisterServices();
 builder.Services.AddControllers();
 builder.Services
     .AddScoped<IAuthManager, AuthManager>()
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Finance system API",
+            Version = "v1"
+        });
+
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Insert Bearer jwt token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT"
+        });
+
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+    })
+    .AddAutoMapper(typeof(UserProfile).Assembly)
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false;
         var jwtOptions = builder.Configuration.GetSection(nameof(AuthOptions)).Get<AuthOptions>();
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -36,43 +78,6 @@ builder.Services
             ValidateIssuerSigningKey = true
         };
     });
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "Finance system API",
-            Version = "v1"
-        });
-        
-        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-        {
-            In = ParameterLocation.Header,
-            Description = "Insert Bearer jwt token",
-            Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey
-        });
-        
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement {
-            { 
-                new OpenApiSecurityScheme 
-                { 
-                    Reference = new OpenApiReference 
-                    { 
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer" 
-                    } 
-                },
-                new string[] { } 
-            } 
-        });
-    })
-    .AddAutoMapper(typeof(UserProfile).Assembly)
-    .AddAuthorization()
-    .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
-
 
 var app = builder.Build();
 

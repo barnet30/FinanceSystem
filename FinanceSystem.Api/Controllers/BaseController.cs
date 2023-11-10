@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using FinanceSystem.Abstractions.Models.Result;
+using FinanceSystem.Common.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,18 @@ namespace FinanceSystem.Controllers;
 [Route("api/[controller]")]
 public abstract class BaseController : ControllerBase
 {
+    protected Guid AuthorizedUserId
+    {
+        get
+        {
+            var userIdClaim = User.FindFirstValue(AuthorizationConstants.UserIdClaimName);
+            if (!string.IsNullOrWhiteSpace(userIdClaim) && Guid.TryParse(userIdClaim, out var userId))
+                return userId;
+
+            return default;
+        }
+    }
+
     protected async Task<IActionResult> GetResult(Func<Task<Result>> action,
         HttpStatusCode successStatusCode = HttpStatusCode.OK)
     {
