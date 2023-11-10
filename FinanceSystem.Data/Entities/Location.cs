@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
-namespace FinanceSystem.Abstractions.Entities;
+namespace FinanceSystem.Data.Entities;
 
-public class LocationEntity : BaseEntity
+public class Location : BaseEntity
 { 
     [Required]
     [MaxLength(500)]
@@ -14,5 +14,5 @@ public class LocationEntity : BaseEntity
     
     public Point Coordinates { get; set; }
 
-    public List<PaymentEntity> Payments { get; set; } = new();
+    public List<Payment> Payments { get; set; } = new();
 }
