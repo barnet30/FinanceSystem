@@ -4,7 +4,7 @@ using FinanceSystem.Data.Entities;
 
 namespace FinanceSystem.Data.Interfaces;
 
-public interface IRepository <T> where T: BaseEntity
+public interface IRepository<T> where T : BaseEntity
 {
     Task<IQueryable<T>> QueryAsync(Expression<Func<T, bool>> filter = null,
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);

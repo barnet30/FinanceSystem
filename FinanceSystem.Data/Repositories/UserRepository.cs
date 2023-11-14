@@ -1,5 +1,6 @@
 ﻿using FinanceSystem.Data.Entities;
 using FinanceSystem.Data.Interfaces.Users;
+using FinanceSystem.Data.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data.Repositories;

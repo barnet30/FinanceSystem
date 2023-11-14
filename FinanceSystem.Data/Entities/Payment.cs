@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FinanceSystem.Common.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data.Entities;
 
@@ -9,8 +10,6 @@ public class Payment : BaseEntity
     public double PaymentAmount { get; set; }
     
     public DateTime PaymentDate { get; set; }
-    
-    public PaymentCategories PaymentCategory { get; set; } = PaymentCategories.Others;
     
     public PaymentTypes PaymentType { get; set; }
     
@@ -34,4 +33,8 @@ public class Payment : BaseEntity
 
     [Required]
     public Location Location { get; set; }
+    
+    [Required]
+    [DeleteBehavior(DeleteBehavior.SetNull)]
+    public PaymentCategory PaymentCategory { get; set; }
 }
