@@ -9,7 +9,6 @@ namespace FinanceSystem.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/[controller]")]
 public abstract class BaseController : ControllerBase
 {
     protected Guid AuthorizedUserId

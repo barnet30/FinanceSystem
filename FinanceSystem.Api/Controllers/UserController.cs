@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceSystem.Controllers;
 
 [Tags("User")]
-[Route("api/user")]
+[Route("api/users")]
 public sealed class UserController : BaseController
 {
     private readonly IUserService _userService;
