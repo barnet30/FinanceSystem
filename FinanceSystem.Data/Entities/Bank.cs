@@ -2,11 +2,7 @@
 
 namespace FinanceSystem.Data.Entities;
 
-public class Bank : BaseEntity
+public class Bank : BaseReferenceEntity
 {
-    [Required]
-    [MaxLength(150)]
-    public string BankName { get; set; }
-
     public List<Payment> Payments { get; set; } = new();
 }

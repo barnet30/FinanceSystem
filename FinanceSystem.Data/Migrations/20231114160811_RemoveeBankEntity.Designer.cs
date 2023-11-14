@@ -3,6 +3,7 @@ using System;
 using FinanceSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceSystem.Data.Migrations
 {
     [DbContext(typeof(FinanceSystemDbContext))]
-    partial class FinanceSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114160811_RemoveeBankEntity")]
+    partial class RemoveeBankEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,19 +26,6 @@ namespace FinanceSystem.Data.Migrations
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("FinanceSystem.Data.Entities.Bank", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Banks");
-                });
 
             modelBuilder.Entity("FinanceSystem.Data.Entities.Company", b =>
                 {
@@ -98,9 +88,6 @@ namespace FinanceSystem.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("BankId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Comment")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
@@ -136,8 +123,6 @@ namespace FinanceSystem.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BankId");
 
                     b.HasIndex("CompanyId");
 
@@ -214,12 +199,6 @@ namespace FinanceSystem.Data.Migrations
 
             modelBuilder.Entity("FinanceSystem.Data.Entities.Payment", b =>
                 {
-                    b.HasOne("FinanceSystem.Data.Entities.Bank", "Bank")
-                        .WithMany("Payments")
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FinanceSystem.Data.Entities.Company", "Company")
                         .WithMany("Payments")
                         .HasForeignKey("CompanyId")
@@ -247,8 +226,6 @@ namespace FinanceSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bank");
-
                     b.Navigation("Company");
 
                     b.Navigation("Location");
@@ -258,11 +235,6 @@ namespace FinanceSystem.Data.Migrations
                     b.Navigation("TransferUser");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("FinanceSystem.Data.Entities.Bank", b =>
-                {
-                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("FinanceSystem.Data.Entities.Company", b =>
