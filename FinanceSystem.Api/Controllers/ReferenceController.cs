@@ -24,4 +24,12 @@ public class ReferenceController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PaymentCategoryDto>))]
     public Task<IActionResult> PaymentCategories() =>
         GetResult(async () => await _referenceService.PaymentCategories());
+
+    /// <summary>
+    /// Get list of banks
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("banks")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<BankDto>))]
+    public Task<IActionResult> Banks() => GetResult(async () => await _referenceService.Banks());
 }

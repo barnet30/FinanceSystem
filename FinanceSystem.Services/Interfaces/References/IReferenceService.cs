@@ -6,4 +6,5 @@ namespace FinanceSystem.Services.Interfaces.References;
 public interface IReferenceService
 {
     Task<Result<List<PaymentCategoryDto>>> PaymentCategories();
+    Task<Result<List<BankDto>>> Banks();
 }
