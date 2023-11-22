@@ -19,7 +19,7 @@ public class ValidationActionFilter<T> : IActionFilter where T: class
         if (result.IsValid)
             return;
 
-        var response = Result.NotValid(string.Join(",", result.Errors));
+        var response = Result.NotValid(string.Join(", ", result.Errors));
         context.Result = new JsonResult(response);
     }
 
