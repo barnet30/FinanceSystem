@@ -1,9 +1,11 @@
-﻿namespace FinanceSystem.Data.Entities;
+﻿using FinanceSystem.Abstractions.Interfaces;
+
+namespace FinanceSystem.Data.Entities;
 
 /// <summary>
 /// Base class for reference entities
 /// </summary>
-public abstract class BaseReferenceEntity
+public abstract class BaseReferenceEntity : IReferenceEntity
 {
     /// <summary>
     /// Entity Id
