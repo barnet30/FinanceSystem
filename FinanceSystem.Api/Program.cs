@@ -3,7 +3,11 @@ using Authorization;
 using Authorization.Configuration;
 using Authorization.Interfaces;
 using FinanceSystem.Data.Extensions;
+using FinanceSystem.Filters;
 using FinanceSystem.Services.MapperProfiles;
+using FinanceSystem.Services.Resolver;
+using FinanceSystem.Validation.Payments;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,10 +21,12 @@ builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection(nameof(
 builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();
 
+
 builder.Services.AddControllers();
 builder.Services
     .AddScoped<IAuthManager, AuthManager>()
-    .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"));
+    .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"))
+    .AddScoped(typeof(ValidationActionFilter<>));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -57,7 +63,10 @@ builder.Services.AddSwaggerGen(options =>
             }
         });
     })
-    .AddAutoMapper(typeof(UserProfile).Assembly)
+    .AddAutoMapper(
+        typeof(UserProfile).Assembly,
+        typeof(ReferenceItemMapResolver<>).Assembly)
+    .AddValidatorsFromAssemblyContaining<PaymentPostDtoValidator>()
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

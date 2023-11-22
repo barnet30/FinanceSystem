@@ -11,7 +11,7 @@ namespace FinanceSystem.Controllers;
 [Authorize]
 public abstract class BaseController : ControllerBase
 {
-    protected Guid AuthorizedUserId
+    protected Guid? AuthorizedUserId
     {
         get
         {
@@ -19,7 +19,7 @@ public abstract class BaseController : ControllerBase
             if (!string.IsNullOrWhiteSpace(userIdClaim) && Guid.TryParse(userIdClaim, out var userId))
                 return userId;
 
-            return default;
+            return null;
         }
     }
 

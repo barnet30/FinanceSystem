@@ -1,9 +1,10 @@
 ﻿namespace FinanceSystem.Common.Enums;
 
-public enum PaymentTypes
+[Flags]
+public enum PaymentTypes : byte
 {
+    Other = 0,
     Income = 1,
     Expense = 2,
-    Transfer = 3,
-    Other = 4
+    Transfer = 4
 }

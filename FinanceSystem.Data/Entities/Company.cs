@@ -1,6 +1,6 @@
 ﻿namespace FinanceSystem.Data.Entities;
 
-public class Company : BaseEntity
+public sealed class Company : BaseEntity
 {
     public string FullName { get; set; }
     public string ShortName { get; set; }
