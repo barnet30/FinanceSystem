@@ -22,5 +22,9 @@ public sealed class PaymentProfile : Profile
                 act.MapFrom<ReferenceItemMapResolver<Bank>, int>(src => src.Bank.Id);
             })
             .ForMember(dest => dest.Location, act => act.Ignore());
+
+        CreateMap<Payment, PaymentDto>()
+            .ForMember(dest => dest.TransferUserId,
+                act => act.MapFrom(src => src.TransferUser != null ? src.TransferUser.Id : (Guid?)null));
     }
 }
