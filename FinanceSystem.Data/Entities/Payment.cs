@@ -30,8 +30,7 @@ public class Payment : BaseEntity
     /// </summary>
     [InverseProperty("TransferPayment")]
     public User TransferUser { get; set; }
-
-    [Required]
+    
     public Location Location { get; set; }
     
     [Required]

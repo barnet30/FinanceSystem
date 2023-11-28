@@ -25,7 +25,7 @@ public class User : BaseEntity
     [Required]
     public string Password { get; set; }
 
-    public DateTime CreateDate { get; set; }
+    public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     
     public List<Payment> Payments { get; set; } = new();
 

@@ -3,10 +3,12 @@ using FinanceSystem.Abstractions.Models.Payments;
 using FinanceSystem.Abstractions.Models.Result;
 using FinanceSystem.Common.Constants;
 using FinanceSystem.Data.Entities;
+using FinanceSystem.Data.Interfaces.Locations;
 using FinanceSystem.Data.Interfaces.Payments;
 using FinanceSystem.Data.Interfaces.References;
 using FinanceSystem.Data.Interfaces.Users;
 using FinanceSystem.Services.Interfaces.Payments;
+using FinanceSystem.Services.Specifications.Payments;
 
 namespace FinanceSystem.Services.Services;
 
@@ -15,14 +17,21 @@ public sealed class PaymentService : IPaymentService
     private readonly IPaymentRepository _paymentRepository;
     private readonly IUserRepository _userRepository;
     private readonly ICompanyRepository _companyRepository;
+    private readonly ILocationRepository _locationRepository;
     private readonly IMapper _mapper;
 
-    public PaymentService(IPaymentRepository paymentRepository, IUserRepository userRepository, IMapper mapper, ICompanyRepository companyRepository)
+    public PaymentService(IPaymentRepository paymentRepository,
+        IUserRepository userRepository,
+        IMapper mapper,
+        ICompanyRepository companyRepository,
+        ILocationRepository locationRepository
+    )
     {
         _paymentRepository = paymentRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _companyRepository = companyRepository;
+        _locationRepository = locationRepository;
     }
 
     public async Task<Result<Guid>> AddPayment(Guid? authorizedUserId, PaymentPostDto paymentPostDto)
@@ -36,10 +45,8 @@ public sealed class PaymentService : IPaymentService
 
         var mappedPayment = _mapper.Map<Payment>(paymentPostDto);
         mappedPayment.User = user;
-        
-        // map location
-        if (!paymentPostDto.Location.Id.HasValue)
-            mappedPayment.Location.Id = Guid.NewGuid();
+
+        await MapLocation(paymentPostDto, mappedPayment);
 
         if (paymentPostDto.CompanyId.HasValue)
         {
@@ -61,5 +68,42 @@ public sealed class PaymentService : IPaymentService
         
         var addedPaymentId = await _paymentRepository.InsertAsync(mappedPayment);
         return Result<Guid>.FromValue(addedPaymentId);
+    }
+
+    public async Task<Result> EditPayment(Guid? authorizedUserId, Guid paymentId, PaymentPostDto paymentPostDto)
+    {
+        if (!authorizedUserId.HasValue)
+            return Result.Unauthorized(UserConstants.UnauthorizedUser);
+        
+        var user = await _userRepository.GetByIdAsync(authorizedUserId.Value);
+        if (user == null)
+            return Result.NotFound(UserConstants.UserNotFound);
+
+        var payment =
+            await _paymentRepository.GetSingleAsync(new SinglePaymentSpecification(authorizedUserId.Value, paymentId));
+        if (payment == null)
+            return Result.NotFound(PaymentConstants.PaymentNotFound);
+
+        _mapper.Map(paymentPostDto, payment);
+        await MapLocation(paymentPostDto, payment);
+
+        await _paymentRepository.UpdateAsync(payment);
+        
+        return Result.Success;
+    }
+
+    private async Task MapLocation(PaymentPostDto paymentPostDto, Payment payment)
+    {
+        var newLocation = _mapper.Map<Location>(paymentPostDto.Location);
+        newLocation.Id = Guid.NewGuid();
+        
+        if (payment.Location == null)
+            payment.Location = newLocation;
+        
+        else if (!payment.Location.Equals(newLocation))
+        {
+            await _locationRepository.DeleteAsync(payment.Location.Id);
+            payment.Location = newLocation;
+        }
     }
 }
