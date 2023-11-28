@@ -92,6 +92,19 @@ public sealed class PaymentService : IPaymentService
         return Result.Success;
     }
 
+    public async Task<Result<PaymentDto>> GetPaymentById(Guid? authorizedUserId, Guid paymentId)
+    {
+        if (!authorizedUserId.HasValue)
+            return Result<PaymentDto>.Unauthorized(UserConstants.UnauthorizedUser);
+
+        var payment =
+            await _paymentRepository.GetSingleAsync(new SinglePaymentSpecification(authorizedUserId.Value, paymentId));
+
+        return payment == null
+            ? Result<PaymentDto>.NotFound(PaymentConstants.PaymentNotFound)
+            : Result<PaymentDto>.FromValue(_mapper.Map<PaymentDto>(payment));
+    }
+
     private async Task MapLocation(PaymentPostDto paymentPostDto, Payment payment)
     {
         var newLocation = _mapper.Map<Location>(paymentPostDto.Location);

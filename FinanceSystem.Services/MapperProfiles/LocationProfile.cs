@@ -12,5 +12,10 @@ public sealed class LocationProfile : Profile
         CreateMap<LocationDto, Location>()
             .ForMember(dest => dest.Coordinates,
                 act => act.MapFrom(src => new Point(src.Coordinates.Longitude, src.Coordinates.Latitude)));
+
+        CreateMap<Location, LocationDto>()
+            .ForMember(dest => dest.Coordinates,
+                act => act.MapFrom(src => new CoordinateDto
+                    { Longitude = src.Coordinates.X, Latitude = src.Coordinates.Y }));
     }
 }

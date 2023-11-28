@@ -43,4 +43,15 @@ public sealed class PaymentController : BaseController
     [ServiceFilter(typeof(ValidationActionFilter<PaymentPostDto>))]
     public Task<IActionResult> EditPayment([FromRoute] Guid paymentId, [FromBody] PaymentPostDto paymentPostDto) =>
         GetResult(async () => await _paymentService.EditPayment(AuthorizedUserId, paymentId, paymentPostDto));
+
+    /// <summary>
+    /// Get payment by Id
+    /// </summary>
+    /// <param name="paymentId">Payment Id guid</param>
+    /// <returns></returns>
+    [HttpGet("{paymentId:guid}")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    public Task<IActionResult> GetPaymentById([FromRoute] Guid paymentId) => GetResult(async () =>
+        await _paymentService.GetPaymentById(AuthorizedUserId, paymentId));
 }

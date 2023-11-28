@@ -20,4 +20,6 @@ public interface IPaymentService
     /// <param name="paymentId">Payment Id</param>
     /// <param name="paymentPostDto">Payment params</param>
     Task<Result> EditPayment(Guid? authorizedUserId, Guid paymentId, PaymentPostDto paymentPostDto);
+
+    Task<Result<PaymentDto>> GetPaymentById(Guid? authorizedUserId, Guid paymentId);
 }
