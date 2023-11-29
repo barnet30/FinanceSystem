@@ -2,6 +2,7 @@ using System.Text;
 using Authorization;
 using Authorization.Configuration;
 using Authorization.Interfaces;
+using FinanceSystem.Converters;
 using FinanceSystem.Data.Extensions;
 using FinanceSystem.Filters;
 using FinanceSystem.Services.MapperProfiles;
@@ -11,6 +12,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,13 @@ builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();
 
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.Converters.Add(new EnumFlagConverter());
+    });
+
 builder.Services
     .AddScoped<IAuthManager, AuthManager>()
     .AddDataAccess(builder.Configuration.GetConnectionString("DatabaseConnectionString"))
@@ -83,7 +91,7 @@ builder.Services.AddSwaggerGen(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateLifetime = true,
+            ValidateLifetime = false,
             ValidateIssuerSigningKey = true
         };
     });
