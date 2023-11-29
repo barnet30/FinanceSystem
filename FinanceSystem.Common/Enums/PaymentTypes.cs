@@ -3,8 +3,8 @@
 [Flags]
 public enum PaymentTypes : byte
 {
-    Other = 0,
     Income = 1,
     Expense = 2,
-    Transfer = 4
+    Transfer = 4,
+    Other = 8
 }
