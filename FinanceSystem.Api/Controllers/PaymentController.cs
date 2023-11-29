@@ -44,12 +44,26 @@ public sealed class PaymentController : BaseController
     public Task<IActionResult> EditPayment([FromRoute] Guid paymentId, [FromBody] PaymentPostDto paymentPostDto) =>
         GetResult(async () => await _paymentService.EditPayment(AuthorizedUserId, paymentId, paymentPostDto));
 
+    
+    /// <summary>
+    /// Delete several payments
+    /// </summary>
+    /// <param name="idsToDelete">payments ids to delete</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    public Task<IActionResult> DeletePayments([FromBody] List<Guid> idsToDelete) =>
+        GetResult(async () => await _paymentService.DeletePayments(AuthorizedUserId, idsToDelete));
+
     /// <summary>
     /// Get payment by Id
     /// </summary>
     /// <param name="paymentId">Payment Id guid</param>
     /// <returns></returns>
     [HttpGet("{paymentId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaymentDto))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     public Task<IActionResult> GetPaymentById([FromRoute] Guid paymentId) => GetResult(async () =>
