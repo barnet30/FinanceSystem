@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using FinanceSystem.Abstractions.Interfaces;
 using FinanceSystem.Data.Entities;
 using FinanceSystem.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -77,7 +78,9 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Base
     {
         if (entity == null)
             return;
-        DbSet.Remove(entity);
+        
+        entity.IsDeleted = true;
+        entity.DeletedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
     }
 
@@ -89,8 +92,16 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Base
             if (_context.Entry(entityToDelete).State == EntityState.Detached)
                 DbSet.Attach(entityToDelete);
 
-            DbSet.Remove(entityToDelete);
+            entityToDelete.IsDeleted = true;
+            entityToDelete.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task DeleteManyAsync(IEnumerable<TEntity> entities)
+    {
+        foreach (var entity in entities)
+            await DeleteAsync(entity);
+        await _context.SaveChangesAsync();
     }
 }

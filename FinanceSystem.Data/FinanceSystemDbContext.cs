@@ -1,6 +1,5 @@
 ﻿using FinanceSystem.Data.Configurations;
 using FinanceSystem.Data.Entities;
-using FinanceSystem.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceSystem.Data;
@@ -24,7 +23,6 @@ public class FinanceSystemDbContext : DbContext, IFinanceSystemDbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

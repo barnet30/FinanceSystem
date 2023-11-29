@@ -105,6 +105,24 @@ public sealed class PaymentService : IPaymentService
             : Result<PaymentDto>.FromValue(_mapper.Map<PaymentDto>(payment));
     }
 
+    public async Task<Result> DeletePayments(Guid? authorizedUserId, List<Guid> idsToDelete)
+    {
+        if (!idsToDelete.Any())
+            return Result.Success;
+        
+        if (!authorizedUserId.HasValue)
+            return Result.Unauthorized(UserConstants.UnauthorizedUser);
+
+        var paymentsToRemove =
+            await _paymentRepository.QueryAsync(new PaymentsSpecification(authorizedUserId.Value, idsToDelete));
+
+        if (!paymentsToRemove.Any())
+            return Result.NotFound(PaymentConstants.AnyPaymentNotFound);
+        
+        await _paymentRepository.DeleteManyAsync(paymentsToRemove);
+        return Result.Success;
+    }
+
     private async Task MapLocation(PaymentPostDto paymentPostDto, Payment payment)
     {
         var newLocation = _mapper.Map<Location>(paymentPostDto.Location);
