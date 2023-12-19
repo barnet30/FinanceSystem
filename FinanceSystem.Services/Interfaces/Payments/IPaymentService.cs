@@ -1,5 +1,6 @@
 ﻿using FinanceSystem.Abstractions.Models.Payments;
 using FinanceSystem.Abstractions.Models.Result;
+using FinanceSystem.Common;
 
 namespace FinanceSystem.Services.Interfaces.Payments;
 
@@ -36,4 +37,12 @@ public interface IPaymentService
     /// <param name="idsToDelete">payments ids to delete</param>
     /// <returns></returns>
     Task<Result> DeletePayments(Guid? authorizedUserId, List<Guid> idsToDelete);
+
+    /// <summary>
+    /// Получить список платежей
+    /// </summary>
+    /// <param name="authorizedUserId">Идентификатор авторизованного пользователя</param>
+    /// <param name="filterDto">Параметры фильтрации платежей</param>
+    /// <returns></returns>
+    Task<Result<Page<PaymentDto>>> GetPaymentList(Guid? authorizedUserId, PaymentSearchFilterDto filterDto);
 }

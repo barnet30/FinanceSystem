@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Authorization;
 using Authorization.Configuration;
@@ -28,7 +29,8 @@ builder.Services
     .AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.Converters.Add(new EnumFlagConverter());
+        options.SerializerSettings.Converters.Add(new EnumFlagToArrayConverter());
+        options.SerializerSettings.Converters.Add(new NullableEnumFlagToArrayConverter());
     });
 
 builder.Services
@@ -45,6 +47,12 @@ builder.Services.AddSwaggerGen(options =>
             Title = "Finance system API",
             Version = "v1"
         });
+        
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+        options.IncludeXmlComments(xmlPath);
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "FinanceSystem.Abstractions.xml"));
 
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
@@ -75,6 +83,7 @@ builder.Services.AddSwaggerGen(options =>
         typeof(UserProfile).Assembly,
         typeof(ReferenceItemMapResolver<>).Assembly)
     .AddValidatorsFromAssemblyContaining<PaymentPostDtoValidator>()
+    .AddSwaggerGenNewtonsoftSupport()
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
