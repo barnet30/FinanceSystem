@@ -16,8 +16,8 @@ public sealed class SearchPaymentSpecification : Specification<Payment>
         Expression<Func<Payment, bool>> datesCriteria = x => true;
         Expression<Func<Payment, bool>> banksCriteria = x => true;
 
-        if (filter.PaymentTypes.HasValue)
-            typesCriteria = x => filter.PaymentTypes.Value.HasFlag(x.PaymentType);
+        if (filter.PaymentTypes.Length > 0)
+            typesCriteria = x => filter.PaymentTypes.Contains(x.PaymentType);
 
         if (filter.PaymentCategoriesIds != null && filter.PaymentCategoriesIds.Any())
             categoriesCriteria = x => filter.PaymentCategoriesIds.Contains(x.PaymentCategory.Id);

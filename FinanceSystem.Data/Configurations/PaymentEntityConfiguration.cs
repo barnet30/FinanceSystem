@@ -10,8 +10,5 @@ public class PaymentEntityConfiguration : IEntityTypeConfiguration<Payment>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
-
-        builder.HasOne(x => x.TransferUser)
-            .WithMany(x => x.TransferPayment);
     }
 }

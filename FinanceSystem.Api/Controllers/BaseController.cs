@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using FinanceSystem.Abstractions.Models.Result;
 using FinanceSystem.Common.Constants;
+using FinanceSystem.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

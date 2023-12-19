@@ -2,7 +2,7 @@
 using FinanceSystem.Abstractions.Models.Result;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceSystem;
+namespace FinanceSystem.Extensions;
 
 public static class OperationResultExtensions
 {

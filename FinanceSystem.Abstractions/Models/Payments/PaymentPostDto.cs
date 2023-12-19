@@ -3,5 +3,5 @@
 public sealed class PaymentPostDto : PaymentBaseDto
 {
     public Guid? CompanyId { get; set; }
-    public Guid? TransferUserId { get; set; }
+    public bool IsTransfer { get; set; }
 }
