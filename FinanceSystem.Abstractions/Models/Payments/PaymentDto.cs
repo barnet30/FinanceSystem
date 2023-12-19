@@ -6,5 +6,5 @@ public class PaymentDto : PaymentBaseDto
 {
     public Guid Id { get; set; }
     public CompanyDto Company { get; set; }
-    public Guid? TransferUserId { get; set; }
+    public bool IsTransfer { get; set; }
 }

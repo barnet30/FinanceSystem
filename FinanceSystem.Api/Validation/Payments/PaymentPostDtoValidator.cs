@@ -23,11 +23,14 @@ public sealed class PaymentPostDtoValidator : AbstractValidator<PaymentPostDto>
         });
 
         RuleFor(x => x)
-            .Must(x => (x.CompanyId.HasValue && !x.TransferUserId.HasValue) ||
-                       (!x.CompanyId.HasValue && x.TransferUserId.HasValue))
-            .WithMessage(
-                "Следуеть указать место, где совершался платёж или пользователя, которому был совершён платёж");
-
-
+            .Must(x => (x.CompanyId.HasValue && !x.IsTransfer) || (!x.CompanyId.HasValue && x.IsTransfer))
+            .WithMessage("Следуеть указать место, где совершался платёж или был ли платёж переводом");
+        
+        When(x => x.CompanyId.HasValue, () =>
+        {
+            RuleFor(x => x.Location)
+                .NotNull()
+                .WithMessage("Для организаций должен быть указан адрес платежа");
+        });
     }
 }

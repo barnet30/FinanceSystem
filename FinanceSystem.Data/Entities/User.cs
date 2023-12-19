@@ -28,9 +28,4 @@ public class User : BaseEntity
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     
     public List<Payment> Payments { get; set; } = new();
-
-    /// <summary>
-    /// If user transfer someone
-    /// </summary>
-    public List<Payment> TransferPayment { get; set; } = new();
 }
