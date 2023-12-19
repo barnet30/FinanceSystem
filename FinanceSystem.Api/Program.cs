@@ -5,15 +5,18 @@ using Authorization.Configuration;
 using Authorization.Interfaces;
 using FinanceSystem.Converters;
 using FinanceSystem.Data.Extensions;
+using FinanceSystem.Extensions;
 using FinanceSystem.Filters;
 using FinanceSystem.Services.MapperProfiles;
 using FinanceSystem.Services.Resolver;
 using FinanceSystem.Validation.Payments;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +32,7 @@ builder.Services
     .AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.Converters.Add(new EnumFlagToArrayConverter());
-        options.SerializerSettings.Converters.Add(new NullableEnumFlagToArrayConverter());
+        options.SerializerSettings.Converters.Add(new StringEnumConverter());
     });
 
 builder.Services
@@ -116,11 +118,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseHttpsRedirection()
+    .UseAuthentication()
+    .UseAuthorization()
+    .UseExceptionHandler(b => b.Run(async httpContext => await HandleError(httpContext, app.Environment)));
 
 app.MapControllers();
 
 app.Run();
+
+Task HandleError(HttpContext httpContext, IHostEnvironment env)
+{
+    var exceptionHandlerPathFeature = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+    var exception = exceptionHandlerPathFeature?.Error;
+
+    var response = exception.ToProblemDetail(env);
+
+    httpContext.Response.StatusCode = response.Status ?? 500;
+    return httpContext.Response.WriteAsJsonAsync(response);
+}
