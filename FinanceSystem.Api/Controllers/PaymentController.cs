@@ -1,4 +1,5 @@
 ﻿using FinanceSystem.Abstractions.Models.Payments;
+using FinanceSystem.Common;
 using FinanceSystem.Filters;
 using FinanceSystem.Services.Interfaces.Payments;
 using Microsoft.AspNetCore.Mvc;
@@ -68,4 +69,15 @@ public sealed class PaymentController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     public Task<IActionResult> GetPaymentById([FromRoute] Guid paymentId) => GetResult(async () =>
         await _paymentService.GetPaymentById(AuthorizedUserId, paymentId));
+
+    /// <summary>
+    /// Получить список платежей
+    /// </summary>
+    /// <param name="filterDto">Параметры фильтрации платежей</param>
+    /// <returns></returns>
+    [HttpPost("list")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Page<PaymentDto>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+    public Task<IActionResult> GetPaymentList([FromBody] PaymentSearchFilterDto filterDto) =>
+        GetResult(async () => await _paymentService.GetPaymentList(AuthorizedUserId, filterDto));
 }

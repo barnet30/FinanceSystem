@@ -6,6 +6,15 @@
         <RootNamespace>FinanceSystem</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\FinanceSystem.Api.xml</DocumentationFile>
+      <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\FinanceSystem.Api.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="FluentValidation" Version="11.8.0" />

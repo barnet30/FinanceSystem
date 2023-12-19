@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinanceSystem.Abstractions.Models.Payments;
 using FinanceSystem.Abstractions.Models.Result;
+using FinanceSystem.Common;
 using FinanceSystem.Common.Constants;
 using FinanceSystem.Data.Entities;
 using FinanceSystem.Data.Interfaces.Locations;
@@ -121,6 +122,30 @@ public sealed class PaymentService : IPaymentService
         
         await _paymentRepository.DeleteManyAsync(paymentsToRemove);
         return Result.Success;
+    }
+
+    public async Task<Result<Page<PaymentDto>>> GetPaymentList(Guid? authorizedUserId, PaymentSearchFilterDto filterDto)
+    {
+        if (!authorizedUserId.HasValue)
+            return Result<Page<PaymentDto>>.Unauthorized(UserConstants.UnauthorizedUser);
+
+        var payments =
+            await _paymentRepository.QueryAsync(new SearchPaymentSpecification(authorizedUserId.Value, filterDto));
+
+        if (payments == null)
+            return Result<Page<PaymentDto>>.FromValue(Page<PaymentDto>.Empty);
+
+        var total = payments.Count();
+        
+        var items = payments
+            .Skip((filterDto.Page - 1) * filterDto.Count)
+            .Take(filterDto.Count)
+            .ToArray();
+
+        var itemsMapped = _mapper.Map<PaymentDto[]>(items);
+
+        return Result<Page<PaymentDto>>.FromValue(new Page<PaymentDto>
+            { Items = itemsMapped, Total = total, TotalOnPage = filterDto.Count });
     }
 
     private async Task MapLocation(PaymentPostDto paymentPostDto, Payment payment)

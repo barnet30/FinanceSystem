@@ -5,6 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\FinanceSystem.Abstractions.xml</DocumentationFile>
+      <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\FinanceSystem.Abstractions.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="12.0.1" />
       <PackageReference Include="NetTopologySuite" Version="2.5.0" />
