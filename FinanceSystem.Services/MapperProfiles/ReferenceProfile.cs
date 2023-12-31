@@ -10,9 +10,6 @@ public class ReferenceProfile : Profile
     public ReferenceProfile()
     {
         CreateMap<PaymentCategory, PaymentCategoryDto>().ReverseMap();
-        
         CreateMap<Bank, BankDto>().ReverseMap();
-        
-        CreateMap<Company, CompanyDto>().ReverseMap();
     }
 }

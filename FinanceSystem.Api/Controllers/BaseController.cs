@@ -12,6 +12,8 @@ namespace FinanceSystem.Controllers;
 [Authorize]
 public abstract class BaseController : ControllerBase
 {
+    private const HttpStatusCode SuccessStatusCode = HttpStatusCode.OK;
+
     protected Guid? AuthorizedUserId
     {
         get
@@ -24,24 +26,23 @@ public abstract class BaseController : ControllerBase
         }
     }
 
-    protected async Task<IActionResult> GetResult(Func<Task<Result>> action,
-        HttpStatusCode successStatusCode = HttpStatusCode.OK)
+    protected async Task<IActionResult> GetResult(Func<Task<Result>> action)
     {
         var result = await action();
 
         return new ObjectResult(result.ToProblemDetails())
         {
-            StatusCode = result.IsSuccess ? (int)successStatusCode : (int)result.Errors.Type
+            StatusCode = result.IsSuccess ? (int)SuccessStatusCode : (int)result.Errors.Type
         };
     }
 
-    protected static async Task<IActionResult> GetResult<T>(Func<Task<Result<T>>> action, HttpStatusCode successStatusCode = HttpStatusCode.OK)
+    protected static async Task<IActionResult> GetResult<T>(Func<Task<Result<T>>> action)
     {
         var result = await action();
 
         return new ObjectResult(result.IsSuccess ? result.Data : result.ToProblemDetails())
         {
-            StatusCode = result.IsSuccess ? (int)successStatusCode : (int)result.Errors.Type
+            StatusCode = result.IsSuccess ? (int)SuccessStatusCode : (int)result.Errors.Type
         };
     }
 }

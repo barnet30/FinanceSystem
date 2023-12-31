@@ -14,8 +14,6 @@ public class Location : BaseEntity
     
     public Point Coordinates { get; set; }
 
-    public List<Payment> Payments { get; set; } = new();
-    
     public override bool Equals(object obj)
     {
         if (obj is Location location)

@@ -16,4 +16,5 @@ public interface IRepository<T> where T : BaseEntity
     Task DeleteAsync(T entity);
     Task DeleteAsync(Guid id);
     Task DeleteManyAsync(IEnumerable<T> entities);
+    Task DeleteManyAsync(IEnumerable<Guid> entitiesIds);
 }

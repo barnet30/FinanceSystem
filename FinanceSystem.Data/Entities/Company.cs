@@ -6,6 +6,11 @@ public sealed class Company : BaseEntity
     public string ShortName { get; set; }
     public string Inn { get; set; }
     public string Ogrn { get; set; }
+    
+    /// <summary>
+    /// Адрес платежа
+    /// </summary>
+    public Location Location { get; set; }
 
     public List<Payment> Payments { get; set; } = new();
 }

@@ -10,9 +10,5 @@ public class LocationEntityConfiguration : IEntityTypeConfiguration<Location>
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedNever();
-
-        builder.HasMany(x => x.Payments)
-            .WithOne(x => x.Location)
-            .OnDelete(DeleteBehavior.SetNull);
     }
 }

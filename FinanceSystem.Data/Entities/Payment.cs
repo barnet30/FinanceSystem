@@ -51,12 +51,7 @@ public class Payment : BaseEntity
     /// </summary>
     [Required]
     public User User { get; set; }
-    
-    /// <summary>
-    /// Адрес платежа
-    /// </summary>
-    public Location Location { get; set; }
-    
+
     /// <summary>
     /// Категория платежа
     /// </summary>
