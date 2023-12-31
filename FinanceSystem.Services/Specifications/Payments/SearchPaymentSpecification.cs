@@ -40,8 +40,7 @@ public sealed class SearchPaymentSpecification : Specification<Payment>
             .Where(banksCriteria)
             .Include(x => x.Bank)
             .Include(x => x.Company)
-            .Include(x => x.PaymentCategory)
-            .Include(x => x.Location);
+            .Include(x => x.PaymentCategory);
 
         if (!string.IsNullOrEmpty(filter.SortColumn))
         {
@@ -50,8 +49,6 @@ public sealed class SearchPaymentSpecification : Specification<Payment>
             else
                 Query.OrderByDescending(ResolveSortingColumn(filter.SortColumn)!);
         }
-
-        
     }
     
     private static Expression<Func<Payment, object>> ResolveSortingColumn(string sortColumn)

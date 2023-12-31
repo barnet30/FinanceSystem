@@ -46,9 +46,7 @@ public sealed class PaymentService : IPaymentService
 
         var mappedPayment = _mapper.Map<Payment>(paymentPostDto);
         mappedPayment.User = user;
-
-        await MapLocation(paymentPostDto, mappedPayment);
-
+        
         if (paymentPostDto.CompanyId.HasValue)
         {
             var company = await _companyRepository.GetByIdAsync(paymentPostDto.CompanyId.Value);
@@ -77,7 +75,6 @@ public sealed class PaymentService : IPaymentService
             return Result.NotFound(PaymentConstants.PaymentNotFound);
 
         _mapper.Map(paymentPostDto, payment);
-        await MapLocation(paymentPostDto, payment);
 
         await _paymentRepository.UpdateAsync(payment);
         
@@ -140,23 +137,5 @@ public sealed class PaymentService : IPaymentService
 
         return Result<Page<PaymentDto>>.FromValue(new Page<PaymentDto>
             { Items = itemsMapped, Total = total, TotalOnPage = filterDto.Count });
-    }
-
-    private async Task MapLocation(PaymentPostDto paymentPostDto, Payment payment)
-    {
-        if (paymentPostDto.Location == null && paymentPostDto.IsTransfer)
-            return;
-
-        var newLocation = _mapper.Map<Location>(paymentPostDto.Location);
-        newLocation.Id = Guid.NewGuid();
-        
-        if (payment.Location == null)
-            payment.Location = newLocation;
-        
-        else if (!payment.Location.Equals(newLocation))
-        {
-            await _locationRepository.DeleteAsync(payment.Location.Id);
-            payment.Location = newLocation;
-        }
     }
 }

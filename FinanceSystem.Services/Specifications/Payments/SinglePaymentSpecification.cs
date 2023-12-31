@@ -10,7 +10,6 @@ public sealed class SinglePaymentSpecification : SingleResultSpecification<Payme
         Query
             .Where(x => !x.IsDeleted && x.Id == paymentId && x.User.Id == authorizedUserId)
             .Include(x => x.Company)
-            .Include(x => x.Location)
             .Include(x => x.PaymentCategory)
             .Include(x => x.Bank);
     }

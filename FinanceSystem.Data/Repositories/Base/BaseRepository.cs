@@ -104,4 +104,11 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Base
             await DeleteAsync(entity);
         await _context.SaveChangesAsync();
     }
+
+    public async Task DeleteManyAsync(IEnumerable<Guid> entitiesIds)
+    {
+        foreach (var entity in entitiesIds)
+            await DeleteAsync(entity);
+        await _context.SaveChangesAsync();
+    }
 }

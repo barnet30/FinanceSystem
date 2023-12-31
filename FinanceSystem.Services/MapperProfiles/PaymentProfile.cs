@@ -20,8 +20,7 @@ public sealed class PaymentProfile : Profile
             {
                 act.PreCondition(dest => dest.Bank != null);
                 act.MapFrom<ReferenceItemMapResolver<Bank>, int>(src => src.Bank.Id);
-            })
-            .ForMember(dest => dest.Location, act => act.Ignore());
+            });
 
         CreateMap<Payment, PaymentDto>();
     }
