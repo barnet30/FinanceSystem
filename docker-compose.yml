@@ -1,0 +1,42 @@
+﻿version: "3.4"
+networks:
+  dev:
+    driver: bridge
+    
+services:         
+  postgres_db:
+    image: docker.io/library/financesystem-postgres_db
+    container_name: postgres_db
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    environment:
+      POSTGRES_DB: "financeSystem"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5433:5432"
+    restart: always
+    networks:
+      - dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    
+  app:
+    image: docker.io/library/financesystem
+    container_name: financesystem
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings_DatabaseConnectionString=Server=localhost;Port=5432;User Id=postgres;password=123;Database=financeSystem; Include Error Detail=true
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8088:80"
+    depends_on:
+      - postgres_db
+    networks:
+      - dev
+
+volumes:
+  postgres-data:
