@@ -3,7 +3,6 @@ using System.Text;
 using Authorization;
 using Authorization.Configuration;
 using Authorization.Interfaces;
-using FinanceSystem.Converters;
 using FinanceSystem.Data.Extensions;
 using FinanceSystem.Extensions;
 using FinanceSystem.Filters;
@@ -25,8 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection(nameof(AuthOptions)));
 
 builder.Services.RegisterRepositories();
-builder.Services.RegisterServices();
-
+builder.Services.RegisterServices(builder.Configuration.GetValue<string>("SearchGrpcService"));
 
 builder.Services
     .AddControllers()

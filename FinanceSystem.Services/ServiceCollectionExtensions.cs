@@ -1,9 +1,14 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
+
+using FinanceSystem.Search;
+// ReSharper disable once CheckNamespace
+using Grpc.Net.Client;
+
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static void RegisterServices(this IServiceCollection services)
+    public static void RegisterServices(this IServiceCollection services, string searchGrpcServiceUrl)
     {
         try
         {
@@ -20,6 +25,16 @@ public static class ServiceCollectionExtensions
                 else
                     services.AddScoped(service);
             }
+            
+            services.AddGrpcClient<Greeter.GreeterClient>(opt =>
+            {
+                opt.Address = new Uri(searchGrpcServiceUrl);
+            });
+
+            services.AddGrpcClient<FinanceSystemSearch.FinanceSystemSearchClient>(opt =>
+            {
+                opt.Address = new Uri(searchGrpcServiceUrl);
+            });
         }
         catch
         {

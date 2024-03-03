@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "FinanceSystem.Search";
+
+import "google/protobuf/timestamp.proto";
+
+package search;
+
+service FinanceSystemSearch {
+  rpc ReindexPayment (PaymentIndex) returns (IndexResponse);
+}
+
+message PaymentIndex{
+  string Id = 1;
+  string CompanyAddress = 2;
+  string CompanyFullName = 3;
+  string CompanyShortName = 4;
+  google.protobuf.Timestamp PaymentDate = 5;
+}
+
+message IndexResponse{
+  string Message = 1;
+  bool IsSuccess = 2;
+}
